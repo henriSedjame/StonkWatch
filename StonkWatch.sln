@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Server", "StonkWatch\src\Server\Server.fsproj", "{3C357C74-DA18-476A-BE17-A33B0CF856A4}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Client", "StonkWatch\src\Client\Client.fsproj", "{4969B728-1C10-4D28-9ACB-EF1255F7091D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Shared", "StonkWatch\src\Shared\Shared.fsproj", "{30412E83-9C05-449C-8396-540ECA072A3D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Server.Tests", "StonkWatch\tests\Server\Server.Tests.fsproj", "{BA615907-A77F-4BA6-A4D1-4292DE90889D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Client.Tests", "StonkWatch\tests\Client\Client.Tests.fsproj", "{42DF2ACB-09C3-4416-AA55-FE22C0106F1D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Shared.Tests", "StonkWatch\tests\Shared\Shared.Tests.fsproj", "{6F36F6B6-CF15-4C9C-9001-A851BEB707B2}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Build", "StonkWatch\Build.fsproj", "{69981BF2-6C81-442D-B219-C4546294FFED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C357C74-DA18-476A-BE17-A33B0CF856A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C357C74-DA18-476A-BE17-A33B0CF856A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C357C74-DA18-476A-BE17-A33B0CF856A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C357C74-DA18-476A-BE17-A33B0CF856A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4969B728-1C10-4D28-9ACB-EF1255F7091D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4969B728-1C10-4D28-9ACB-EF1255F7091D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4969B728-1C10-4D28-9ACB-EF1255F7091D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4969B728-1C10-4D28-9ACB-EF1255F7091D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30412E83-9C05-449C-8396-540ECA072A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30412E83-9C05-449C-8396-540ECA072A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30412E83-9C05-449C-8396-540ECA072A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30412E83-9C05-449C-8396-540ECA072A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA615907-A77F-4BA6-A4D1-4292DE90889D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA615907-A77F-4BA6-A4D1-4292DE90889D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA615907-A77F-4BA6-A4D1-4292DE90889D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA615907-A77F-4BA6-A4D1-4292DE90889D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42DF2ACB-09C3-4416-AA55-FE22C0106F1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42DF2ACB-09C3-4416-AA55-FE22C0106F1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42DF2ACB-09C3-4416-AA55-FE22C0106F1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42DF2ACB-09C3-4416-AA55-FE22C0106F1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F36F6B6-CF15-4C9C-9001-A851BEB707B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F36F6B6-CF15-4C9C-9001-A851BEB707B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F36F6B6-CF15-4C9C-9001-A851BEB707B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F36F6B6-CF15-4C9C-9001-A851BEB707B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69981BF2-6C81-442D-B219-C4546294FFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69981BF2-6C81-442D-B219-C4546294FFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69981BF2-6C81-442D-B219-C4546294FFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69981BF2-6C81-442D-B219-C4546294FFED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
