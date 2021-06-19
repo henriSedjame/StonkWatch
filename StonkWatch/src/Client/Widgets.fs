@@ -18,6 +18,8 @@ module Level =
         createElement Html.div "level-left"
     let public right =
         createElement Html.div "level-right"
+    let public item =
+        createElement Html.div "level-item"
 
 module Padding =
 

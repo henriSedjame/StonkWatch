@@ -1,5 +1,7 @@
 module Client.Components
 
+open System
+open Client.Model
 open Sutil
 open Sutil.Bulma
 open Sutil.Attr
@@ -27,9 +29,13 @@ let menubar =
     Menu.menubar [ Html.text "Menu" ]
     |> withStyle AppStyles.menubarStyle
 
-let public content =
+let public content (model: IObservable<Model>) (dispatch : Dispatch<Message>) =
     bulma.columns [
              class' "full-height"
              menubar
-             AccountSummaryView.accountSummaryView
+             bulma.column [
+                 column.is8
+                 AccountSummaryView.accountSummaryView model dispatch
+             ]
+
          ]

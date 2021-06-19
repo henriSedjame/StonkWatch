@@ -32,7 +32,8 @@ module AppStyles =
                                rule ".pnl-percent" [Css.fontSize 15]
                                rule ".pnl-title" [Css.fontSize 18; Css.fontWeightBold]
                                rule ".success" [Css.color Colors.green]
-                               rule ".danger" [Css.color Colors.red]]
+                               rule ".danger" [Css.color Colors.red]
+                               rule ".selected" [Css.backgroundColor Colors.purple; Css.color Colors.white]]
 
         let public navbarStyle =
             withBulmaHelpers [ rule ".navbar" [ Css.backgroundColor Colors.purple ]
