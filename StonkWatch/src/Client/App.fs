@@ -1,63 +1,27 @@
 module App
 
+open Client
+open Farmer.Arm.Insights
 open Sutil
-open Sutil.DOM
+open Sutil.Bulma
 open Sutil.Attr
+open Sutil.DOM
+open Sutil.Styling
 
-type Model = { Counter : int }
+type Model = Empty
 
-// Model helpers
-let getCounter m = m.Counter
+type Message = Noop
 
-type Message =
-    | Increment
-    | Decrement
-
-let init () : Model = { Counter = 0 }
-
-let update (msg : Message) (model : Model) : Model =
-    match msg with
-    |Increment -> { model with Counter = model.Counter + 1 }
-    |Decrement -> { model with Counter = model.Counter - 1 }
+let update (msg: Message) (model: Model) : Model = model
 
 // In Sutil, the view() function is called *once*
-let view() =
-
-    // model is an IStore<ModeL>
-    // This means we can write to it if we want, but when we're adopting
-    // Elmish, we treat it like an IObservable<Model>
-    let model, dispatch = () |> Store.makeElmishSimple init update ignore
-
+let view () =
     Html.div [
-        // Get used to doing this for components, even though this is a top-level app.
-        disposeOnUnmount [ model ]
-
-        // See Sutil.Styling for more advanced styling options
-        style [
-            Css.fontFamily "Arial, Helvetica, sans-serif"
-            Css.margin 20
-        ]
-
-        // Think of this line as
-        // text $"Counter = {model.counter}"
-        Bind.fragment (model |> Store.map getCounter) <| fun n ->
-            text $"Counter = {n}"
-
-        Html.div [
-            Html.button [
-                class' "button" // Bulma styling, included in index.html
-
-                // Dispatching is as for normal ELmish. Sutil event handlers take an extra options array though
-                onClick (fun _ -> dispatch Decrement) []
-                text "-"
-            ]
-
-            Html.button [
-                class' "button"
-                onClick (fun _ -> dispatch Increment) []
-                text "+"
-            ]
-        ]]
+         class' "body"
+         Components.navbar
+         Components.content
+    ]
+    |> withStyle Styling.AppStyles.mainStyle
 
 // Start the app
-view() |> mountElement "sutil-app"
+view () |> mountElement "sutil-app"
