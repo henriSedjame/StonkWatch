@@ -26,7 +26,7 @@ module AppStyles =
         let public mainStyle =
             withBulmaHelpers [ rule ".body" [ Css.height 1000 ]
                                rule ".full-height" [ Css.heightInheritFromParent ]
-                               rule ".title" [Css.padding 10]
+                               rule ".title" []
                                rule ".bloc" [Css.margin 5]
                                rule ".light-grey-bloc" [Css.backgroundColor Colors.lightGrey]
                                rule ".pnl-percent" [Css.fontSize 15]

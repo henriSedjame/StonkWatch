@@ -1,8 +1,8 @@
 module Client.Model
 
-open Client.Utils.Percentage
+open Shared.Domain
 
-type SummaryInfo =
+type PortfolioTab =
     | Positions
     | Balances
     member public this.name
@@ -12,9 +12,8 @@ type SummaryInfo =
             | Balances -> "Balances"
 
 type Model =
-    { OpenPnl: decimal<percent>
-      DayPnl: decimal<percent>
-      SelectedPane: SummaryInfo }
+    { Portfolio: Portfolio
+      CurrentPortfolioTab: PortfolioTab }
 
 type Message =
-    |SelectedPaneChanged of SummaryInfo
+    |SelectedPaneChanged of PortfolioTab

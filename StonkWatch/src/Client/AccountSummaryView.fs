@@ -7,7 +7,8 @@ open Sutil.Bulma
 open Sutil.Attr
 open Widgets
 open Utils.Percentage
-
+open Shared.Domain
+open Utils
 module Pnl =
     let element (title: string) (percentage: IObservable<decimal<percent>>) =
 
@@ -20,13 +21,13 @@ module Pnl =
 
         bulma.container [
                           Html.strong title |> withClass "pnl-title"
-                          bindFragment percentage handle
+                          percentage <=> handle
                           ]
 
         |> alignCenter
 
 module Btn =
-    let button (info: SummaryInfo) (selectedPane: IObservable<SummaryInfo>) (dispatch: Dispatch<Message>) =
+    let button (info: PortfolioTab) (selectedPane: IObservable<PortfolioTab>) (dispatch: Dispatch<Message>) =
 
         let isSelected =
             selectedPane
@@ -37,22 +38,45 @@ module Btn =
                               bindClass isSelected "selected"
                               onClick (fun _ -> dispatch (SelectedPaneChanged info)) [] ]
 
+module Table =
+
+    let positionTable (positions: IObservable<PositionInfo list>) =
+        let header =
+            Html.thead [
+                Html.tr[
+                   Table.hCell "Symbols" []
+                   Table.hCell "Open price" []
+                   Table.hCell "Current price" []
+                   Table.hCell "Qty" []
+                   Table.hCell "OpenPnl" []
+                ]
+            ]
+
+        let positionInfoRows (position: PositionInfo) =
+            let openPnl = Positions.openPnl position
+            Html.tr[
+                Table.cell (Positions.symbol position) []
+                Table.cell (string (Positions.averageOpenPrice position)) []
+                Table.cell (string (Positions.currentPrice position)) []
+                Table.cell (string (Positions.openQty position)) []
+                Table.cell (openPnl |> to_string) []
+                |> withClass $"pnl-percent {openPnl |> classFromPercentage}"
+            ]
+
+        let tableFromPositions (ps : PositionInfo list) =
+            Table.table <| header:: (ps |> List.map positionInfoRows)
+
+        bindFragment positions tableFromPositions
+
 let public accountSummaryView (model: IObservable<Model>) (dispatch: Dispatch<Message>) =
 
-    let selectedPane =
-        model
-        |> Store.map (fun m -> m.SelectedPane)
-        |> Store.distinct
+    let selectedPane = model |>> (fun m -> m.CurrentPortfolioTab)
 
-    let openPnl =
-        model
-        |> Store.map (fun m -> m.OpenPnl)
-        |> Store.distinct
+    let positions = model |>> (fun m -> m.Portfolio.Positions)
 
-    let dayPnl =
-        model
-        |> Store.map (fun m -> m.DayPnl)
-        |> Store.distinct
+    let openPnl = model |>> (fun _ -> 3.2m<percent>)
+
+    let dayPnl =  model |>> (fun _ -> 3.2m<percent>)
 
     let title = "Account summary" |> blocTitle
 
@@ -66,5 +90,15 @@ let public accountSummaryView (model: IObservable<Model>) (dispatch: Dispatch<Me
 
     let levelPart = Level.level [ leftPart; rightPart ]
 
-    Margin.all 15 [ bulma.container [ title; levelPart ] ]
+
+    let selectedPaneView = function
+        | Positions -> Table.positionTable positions
+        | Balances -> Html.text "Balances"
+
+
+    Padding.all 15 [ bulma.container [
+        title
+        levelPart
+        selectedPane <=> selectedPaneView
+    ] ]
     |> withClass "bloc light-grey-bloc"

@@ -68,6 +68,16 @@ module Margin =
     let public horizontal (p : int) =
         createElementWithStyle [Css.marginLeft p; Css.marginRight p]
 
+[<RequireQualifiedAccess>]
+module Table =
+    let table = createElement Html.table "table"
+
+    let hCell (title: string) =
+        fun props -> [ Html.text title ] @ props |> Html.th
+
+    let cell (content: string) =
+        fun props -> [ Html.text content ] @ props |> Html.td
+
 let public blocTitle (title: string) =
    Html.div[
         class' "title"

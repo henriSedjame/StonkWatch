@@ -1,12 +1,20 @@
 module Client.Utils
 
-open Sutil.DOM
+open Shared.Domain
+open Sutil
+
+[<AutoOpen>]
+module ObserveOps =
+    let (|>>) model f =
+        model
+        |> Store.map f
+        |> Store.distinct
+
+    let (<=>) model f =
+        Bind.fragment model f
 
 module Percentage =
     let PERCENT_SYMBOL: string = "%"
-
-    [<Measure>]
-    type percent
 
     let to_string (percentage: decimal<percent>) =
         $"{percentage}{PERCENT_SYMBOL}"

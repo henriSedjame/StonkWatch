@@ -2,26 +2,36 @@ module App
 
 open Client
 open Client.Model
-open Client.Utils.Percentage
-open Farmer.Arm.Insights
 open Sutil
-open Sutil.Bulma
 open Sutil.Attr
 open Sutil.DOM
 open Sutil.Styling
+open Shared.Domain
 
 let init () : Model =
     {
-        DayPnl = 3.0m<percent>
-        OpenPnl = 4.0m<percent>
-        SelectedPane = SummaryInfo.Positions
+        Portfolio = {
+            Positions = [
+                {
+                    Stock = {
+                        Symbol = Symbol "GCE"
+                        CurrentPrice = CurrentStockPrice (StockPrice 5.0m<price>)
+                        LastClosePrice = LastClosePrice (StockPrice 1.0m<price>)
+                    }
+                    OpenQty = ShareQuantity (Quantity 2u)
+                    AverageOpenPrice = AverageOpenPrice (AveragePrice 2.5m<price> )
+                }
+            ]
+            Balances = Undefined
+        }
+        CurrentPortfolioTab = PortfolioTab.Positions
     }
 
 let update (msg: Message) (model: Model) : Model =
     match msg with
     |SelectedPaneChanged info ->
-        if model.SelectedPane <> info then
-            {model with SelectedPane = info}
+        if model.CurrentPortfolioTab <> info then
+            {model with CurrentPortfolioTab = info}
         else
             model
 
