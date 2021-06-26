@@ -1,51 +1,53 @@
 module Server
 
-open Fable.Remoting.Server
-open Fable.Remoting.Giraffe
-open Saturn
 
-open Shared
+open Fable.Remoting.AspNetCore
+open Falco
+open Falco.Routing
+open Falco.HostBuilder
+open Microsoft.AspNetCore.Builder
+open Microsoft.AspNetCore.Hosting
+open Microsoft.Extensions.DependencyInjection
 
-type Storage () =
-    let todos = ResizeArray<_>()
+let configureServices (services: IServiceCollection) = services.AddFalco() |> ignore
 
-    member __.GetTodos () =
-        List.ofSeq todos
+// ------------
+// Activate middleware
+// ------------
+let configureApp
+    (endpoints: HttpEndpoint list)
+    (ctx: WebHostBuilderContext)
+    (app: IApplicationBuilder) =
+    let devMode =
+        StringUtils.strEquals ctx.HostingEnvironment.EnvironmentName "Development"
 
-    member __.AddTodo (todo: Todo) =
-        if Todo.isValid todo.Description then
-            todos.Add todo
-            Ok ()
-        else Error "Invalid todo"
+    app
+        .UseWhen(devMode, (fun app -> app.UseDeveloperExceptionPage()))
+        .UseWhen(
+            not (devMode),
+            fun app ->
+                app.UseFalcoExceptionHandler(
+                    Response.withStatusCode 500
+                    >> Response.ofPlainText "Server error"
+                )
+        )
+        .UseFalco(endpoints)
 
-let storage = Storage()
 
-storage.AddTodo(Todo.create "Create new SAFE project") |> ignore
-storage.AddTodo(Todo.create "Write your app") |> ignore
-storage.AddTodo(Todo.create "Ship it !!!") |> ignore
+    |> ignore
 
-let todosApi =
-    { getTodos = fun () -> async { return storage.GetTodos() }
-      addTodo =
-        fun todo -> async {
-            match storage.AddTodo todo with
-            | Ok () -> return todo
-            | Error e -> return failwith e
-        } }
 
-let webApp =
-    Remoting.createApi()
-    |> Remoting.withRouteBuilder Route.builder
-    |> Remoting.fromValue todosApi
-    |> Remoting.buildHttpHandler
 
-let app =
-    application {
-        url "http://0.0.0.0:8085"
-        use_router webApp
-        memory_cache
-        use_static "public"
-        use_gzip
-    }
+// -----------
+// Configure Host
+// -----------
+let configureHost (endpoints: HttpEndpoint list) (webhost: IWebHostBuilder) : IWebHostBuilder =
+    webhost.ConfigureServices(configureServices)
+           .Configure(configureApp endpoints)
+           .UseUrls [|"http://0.0.0.0:8085"|]
 
-run app
+
+webHost [||] {
+    configure configureHost
+    endpoints [ get "/api/" (Response.ofPlainText "Hello World") ]
+}
