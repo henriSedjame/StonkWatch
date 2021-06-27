@@ -17,3 +17,13 @@ type Model =
 
 type Message =
     |SelectedPaneChanged of PortfolioTab
+    |FetchPortfolio
+    |PortfolioFetched of Portfolio
+
+
+module Models =
+    let initial =
+        {
+            Portfolio = { Positions = [] ; Balances = Undefined }
+            CurrentPortfolioTab = PortfolioTab.Positions
+        }

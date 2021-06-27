@@ -1,5 +1,7 @@
 module Client.Styling
 
+open Feliz
+
 module Colors =
 
     [<Literal>]
@@ -24,13 +26,13 @@ module AppStyles =
         open Sutil.Styling
 
         let public mainStyle =
-            withBulmaHelpers [ rule ".body" [ Css.height 1000 ]
+            withBulmaHelpers [ rule ".body" [  length.px 1000 |> Css.height  ]
                                rule ".full-height" [ Css.heightInheritFromParent ]
                                rule ".title" []
-                               rule ".bloc" [Css.margin 5]
+                               rule ".bloc" [length.px 5 |> Css.margin]
                                rule ".light-grey-bloc" [Css.backgroundColor Colors.lightGrey]
-                               rule ".pnl-percent" [Css.fontSize 15]
-                               rule ".pnl-title" [Css.fontSize 18; Css.fontWeightBold]
+                               rule ".pnl-percent" [ length.em 1.2 |> Css.fontSize]
+                               rule ".pnl-title" [length.em 1.3 |> Css.fontSize; Css.fontWeightBold]
                                rule ".success" [Css.color Colors.green]
                                rule ".danger" [Css.color Colors.red]
                                rule ".selected" [Css.backgroundColor Colors.purple; Css.color Colors.white]]

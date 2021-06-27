@@ -27,20 +27,21 @@ module Pnl =
         |> alignCenter
 
 module Btn =
-    let button (info: PortfolioTab) (selectedPane: IObservable<PortfolioTab>) (dispatch: Dispatch<Message>) =
+    let button (tab: PortfolioTab) (selectedPane: IObservable<PortfolioTab>) (dispatch: Dispatch<Message>) =
 
         let isSelected =
             selectedPane
-            |> Store.map ((=) info)
+            |> Store.map ((=) tab)
             |> Store.distinct
 
-        bulma.button.button [ Html.text $"{info.name}"
+        bulma.button.button [ Html.text $"{tab.name}"
                               bindClass isSelected "selected"
-                              onClick (fun _ -> dispatch (SelectedPaneChanged info)) [] ]
+                              onClick (fun _ -> dispatch (SelectedPaneChanged tab)) [] ]
 
 module Table =
 
     let positionTable (positions: IObservable<PositionInfo list>) =
+
         let header =
             Html.thead [
                 Html.tr[
@@ -66,13 +67,16 @@ module Table =
         let tableFromPositions (ps : PositionInfo list) =
             Table.table <| header:: (ps |> List.map positionInfoRows)
 
-        bindFragment positions tableFromPositions
+        Html.div [
+            positions <=> tableFromPositions
+        ]
+
 
 let public accountSummaryView (model: IObservable<Model>) (dispatch: Dispatch<Message>) =
 
     let selectedPane = model |>> (fun m -> m.CurrentPortfolioTab)
 
-    let positions = model |>> (fun m -> m.Portfolio.Positions)
+    let positions = model |>> (fun p -> p.Portfolio.Positions)
 
     let openPnl = model |>> (fun _ -> 3.2m<percent>)
 

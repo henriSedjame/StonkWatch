@@ -6,40 +6,37 @@ open Sutil
 open Sutil.Attr
 open Sutil.DOM
 open Sutil.Styling
-open Shared.Domain
+open Shared
 
-let init () : Model =
-    {
-        Portfolio = {
-            Positions = [
-                {
-                    Stock = {
-                        Symbol = Symbol "GCE"
-                        CurrentPrice = CurrentStockPrice (StockPrice 5.0m<price>)
-                        LastClosePrice = LastClosePrice (StockPrice 1.0m<price>)
-                    }
-                    OpenQty = ShareQuantity (Quantity 2u)
-                    AverageOpenPrice = AverageOpenPrice (AveragePrice 2.5m<price> )
-                }
-            ]
-            Balances = Undefined
-        }
-        CurrentPortfolioTab = PortfolioTab.Positions
-    }
+let init () : Model * Cmd<Message> = Models.initial , Cmd.ofMsg FetchPortfolio
 
-let update (msg: Message) (model: Model) : Model =
+let update (msg: Message) (model: Model) : Model * Cmd<Message> =
     match msg with
-    |SelectedPaneChanged info ->
-        if model.CurrentPortfolioTab <> info then
-            {model with CurrentPortfolioTab = info}
-        else
-            model
+    |SelectedPaneChanged tab ->
+        let m =
+            if model.CurrentPortfolioTab <> tab then
+                {model with CurrentPortfolioTab = tab}
+            else
+                model
+        m, Cmd.none
+
+    |FetchPortfolio ->
+        let cmd = async {
+            do! Async.Sleep 2000
+            return Message.PortfolioFetched Mocks.portfolio
+        }
+
+        model, Cmd.OfAsync.result cmd
+
+    |PortfolioFetched p ->
+        {model with Portfolio = p}, Cmd.none
+
 
 // In Sutil, the view() function is called *once*
 let view () =
 
     // Create store
-    let storedModel, dispatch = Store.makeElmishSimple init update ignore ()
+    let storedModel, dispatch = Store.makeElmish init update ignore ()
 
     Html.div [
 
