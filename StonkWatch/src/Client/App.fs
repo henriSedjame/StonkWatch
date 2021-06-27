@@ -2,6 +2,7 @@ module App
 
 open Client
 open Client.Model
+open Client.ApiClient
 open Sutil
 open Sutil.Attr
 open Sutil.DOM
@@ -22,8 +23,8 @@ let update (msg: Message) (model: Model) : Model * Cmd<Message> =
 
     |FetchPortfolio ->
         let cmd = async {
-            do! Async.Sleep 2000
-            return Message.PortfolioFetched Mocks.portfolio
+            let! portfolio = portfolioClient.getPortfolio ()
+            return Message.PortfolioFetched portfolio
         }
 
         model, Cmd.OfAsync.result cmd

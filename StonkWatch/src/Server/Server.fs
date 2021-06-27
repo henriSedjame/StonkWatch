@@ -2,12 +2,25 @@ module Server
 
 
 open Fable.Remoting.AspNetCore
+open Fable.Remoting.Server
 open Falco
 open Falco.Routing
 open Falco.HostBuilder
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.DependencyInjection
+open Shared
+
+
+let portfolioApi: PortfolioApi = {
+    getPortfolio = fun () -> async { return Mocks.portfolio }
+}
+
+let webApp =
+    Remoting.createApi()
+    |> Remoting.withRouteBuilder Route.builder
+    |> Remoting.fromValue portfolioApi
+
 
 let configureServices (services: IServiceCollection) = services.AddFalco() |> ignore
 
@@ -24,7 +37,7 @@ let configureApp
     app
         .UseWhen(devMode, (fun app -> app.UseDeveloperExceptionPage()))
         .UseWhen(
-            not (devMode),
+            not devMode,
             fun app ->
                 app.UseFalcoExceptionHandler(
                     Response.withStatusCode 500
@@ -32,11 +45,7 @@ let configureApp
                 )
         )
         .UseFalco(endpoints)
-
-
-    |> ignore
-
-
+        .UseRemoting webApp
 
 // -----------
 // Configure Host

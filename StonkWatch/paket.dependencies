@@ -3,6 +3,7 @@ framework: net5.0
 storage: none
 
 nuget Fable.Remoting.AspNetCore
+nuget Fable.Remoting.Client
 nuget Fable.Remoting.Giraffe prerelease
 nuget falco
 nuget Saturn prerelease
